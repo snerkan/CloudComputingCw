@@ -2,6 +2,7 @@ package com.pg4.cloudcw.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class File {
@@ -16,6 +18,12 @@ public class File {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
 
+	@NotNull
+	//@Size(max = 100)
+    @Column(unique = true)
+	private String name;
+	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User user;
@@ -24,6 +32,7 @@ public class File {
 	@JoinColumn(name = "folderId")
 	private Folder folder;
 
+	@NotNull
 	private String address;
 
 	private Date creationDate;
@@ -37,24 +46,27 @@ public class File {
 	protected File() {
 	}
 
-	public File(User user, String address, Folder folder) {
+	public File(String name, User user, String address, Folder folder) {
 		super();
+		this.name = name;
 		this.user = user;
 		this.folder = folder;
 		this.address = address;
 		// this.creationDate = new Date();
 	}
 
-	public File(User user, String address) {
+	public File(String name, User user, String address) {
 		super();
+		this.name = name;
 		this.user = user;
 		this.address = address;
 		// this.folder = -1;
 		// this.creationDate = new Date();
 	}
 	
-	public File(String address) {
+	public File(String name, String address) {
 		super();
+		this.name = name;
 		this.address = address;
 		// this.folder = -1;
 		// this.creationDate = new Date();
@@ -71,6 +83,14 @@ public class File {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public User getUser() {
