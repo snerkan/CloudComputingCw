@@ -5,13 +5,16 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Folder {
@@ -19,8 +22,9 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotNull
 	@ManyToOne
-    @JoinColumn(name = "userId")
+	@JoinColumn(name = "userId")
 	private User user;
 	
 	private String address;
@@ -29,12 +33,12 @@ public class Folder {
 	
 	private boolean isDeleted=false;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<File> files;
 	
-
-	/*
-	private Folder parentId;
+	/*	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "parentId")
+	private Folder parent;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Flag flagId;
@@ -88,13 +92,13 @@ public class Folder {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-/*
-	public Folder getParentId() {
-		return parentId;
+
+	/*public Folder getParent() {
+		return parent;
 	}
 
-	public void setParentId(Folder parentId) {
-		this.parentId = parentId;
+	public void setParent(Folder parent) {
+		this.parent = parent;
 	}*/
 
 	public Date getCreationDate() {
