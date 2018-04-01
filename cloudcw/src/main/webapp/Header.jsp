@@ -62,7 +62,7 @@
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a class="dropdown-item" href="#">Upload File</a> 
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="#">Create Folder</a>
+				<a class="dropdown-item"  data-toggle="modal" data-target="#createFolderModal">Create Folder</a>
 			</div></li>
 
 		</li>

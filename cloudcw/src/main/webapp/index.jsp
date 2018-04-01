@@ -1,71 +1,149 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
+
 <jsp:include page="Header.jsp"></jsp:include>
 
-
 <div class="container">
-	<div class="row">
-		<div class="col">1 of 3</div>
-		<div class="col-6">2 of 3 (wider)</div>
-		<div class="col">3 of 3</div>
-	</div>
-</div>
-
-
-<div class="container">
-	<table class="table">
+	<table id="contentTable" class="table" style="width: 100%">
 		<thead>
 			<tr>
-				<th scope="col">Name</th>
-				<th scope="col">Creation Date</th>
-				<th scope="col">Size</th>
-				<th scope="col"></th>
+				<th>Name</th>
+				<th>Creation Date</th>
+				<th>Size</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<th scope="row">-</th>
-				<td>-</td>
-				<td>-</td>
-				<td>
-					<div class="row">
-						<div class="col-3">
-							<button type="button" class="btn btn-light">Download</button>
-						</div>
-						<div class="col-3">
-							<button type="button" class="btn btn-light">Share</button>
-						</div>
-						<div class="col-3">
-							<button type="button" class="btn btn-light">Delete</button>
-						</div>
-						<div class="col-3">
-							<div class="btn-group">
-								<button type="button" class="btn btn-info dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">Actions</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">Action</a> <a
-										class="dropdown-item" href="#">Another action</a> <a
-										class="dropdown-item" href="#">Something else here</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#">Separated link</a>
-								</div>
+			<c:forEach var="file" items="${files}">
+				<tr>
+					<td>${file.name}</td>
+					<td>${file.creationDate}</td>
+					<td>-</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-info dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">Actions</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">Download</a> <a
+									class="dropdown-item" href="#">Share</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#deleteModal">Delete</a> <a class="dropdown-item"
+									data-toggle="modal" data-target="#renameModal">Rename</a>
+								<div class="dropdown-divider">Move</div>
+								<a class="dropdown-item" href="#">Flag</a>
 							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
+					</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 </div>
 
+
+
+<!-- Rename Item -->
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="renameModalTitle">Rename</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label class="col-form-label">Please, enter a new name:</label> <input
+							type="hidden" class="form-control" id="newName" value=${file.id}>
+						<input type="text" class="form-control" id="newName"
+							value=${file.name}>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Create Folder -->
+<div class="modal fade" id="createFolderModal" tabindex="-1"
+	role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="createFolderModalTitle">Create a
+					Folder</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				
+
+				<form action="index/createFolder" method="post">
+					<div class="form-group">
+						<label class="col-form-label">Please, enter a folder name:</label>
+						<input type="hidden" class="form-control" id="parentId" value=${file.id}>
+						<input type="text" class="form-control" id="newName"  value=${file.name}>
+						<div class="modal-footer">
+							<button type="Reset" class="btn btn-secondary"  data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary" value="Submit">Create</button>
+						</div>		
+					</div>	
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Delete Item -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalTitle">Delete</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">Are you sure?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <script type="text/javascript">
-	$('.dropdown-toggle').dropdown();
-	$('#myDropdown').on('show.bs.dropdown', function() {
-		// do something…
+	$(document).ready(function() {
+		$('#contentTable').DataTable({
+			"sDom" : '<"bottom"flp> ',
+			paging : false,
+			scrollY : 400,
+			ordering : true,
+			colReorder : true
+		});
 	});
 </script>
 </html>
