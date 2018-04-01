@@ -71,6 +71,16 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.44</version>  <!-- v5.x.x is for production, v6.x.x EAP X DevAPI -->
 		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

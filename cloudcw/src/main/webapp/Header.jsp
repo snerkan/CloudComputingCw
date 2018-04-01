@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,6 +9,9 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
@@ -24,6 +29,13 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
+
+<!-- Datatables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light"> <a
@@ -41,16 +53,18 @@
 				<span class="sr-only">(current)</span>
 		</a></li>
 		<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+	
+	
+	
 		<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 			href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-			aria-haspopup="true" aria-expanded="false"> Dropdown </a>
+			aria-haspopup="true" aria-expanded="false"> New </a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="#">Action</a> <a
-					class="dropdown-item" href="#">Another action</a>
+				<a class="dropdown-item" href="#">Upload File</a> 
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="#">Something else here</a>
+				<a class="dropdown-item" href="#">Create Folder</a>
 			</div></li>
-		<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a>
+
 		</li>
 	</ul>
 	<form class="form-inline my-2 my-lg-0">
