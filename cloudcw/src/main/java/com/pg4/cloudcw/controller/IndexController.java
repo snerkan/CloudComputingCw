@@ -17,7 +17,7 @@ public class IndexController {
 	
 	@GetMapping("/")
     public String home(HttpServletRequest request) {
-		request.setAttribute("files", fileService.getAllByUserId());
+		//request.setAttribute("files", fileService.getAllByUserId());
         return "index";
     }
 	

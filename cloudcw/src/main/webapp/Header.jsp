@@ -3,6 +3,9 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+
 <html>
 <head>
 <!-- Required meta tags -->
@@ -52,7 +55,7 @@
 		<li class="nav-item active"><a class="nav-link" href="#">Home
 				<span class="sr-only">(current)</span>
 		</a></li>
-		<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+		<li class="nav-item"><a class="nav-link" href="/trash">Trash</a></li>
 	
 	
 	
@@ -60,7 +63,7 @@
 			href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 			aria-haspopup="true" aria-expanded="false"> New </a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="#">Upload File</a> 
+				<a class="dropdown-item"data-toggle="modal" data-target="#createFileModal">Upload File</a> 
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item"  data-toggle="modal" data-target="#createFolderModal">Create Folder</a>
 			</div></li>
