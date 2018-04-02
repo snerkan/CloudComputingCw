@@ -52,7 +52,8 @@ public class File {
 		this.user = user;
 		this.folder = folder;
 		this.address = address;
-		// this.creationDate = new Date();
+		this.creationDate = new Date();
+		this.isDeleted = false;
 	}
 
 	public File(String name, User user, String address) {
@@ -60,16 +61,9 @@ public class File {
 		this.name = name;
 		this.user = user;
 		this.address = address;
-		// this.folder = -1;
-		// this.creationDate = new Date();
-	}
-	
-	public File(String name, String address) {
-		super();
-		this.name = name;
-		this.address = address;
-		// this.folder = -1;
-		// this.creationDate = new Date();
+	     this.folder = null;
+		 this.creationDate = new Date();
+		 this.isDeleted = false;
 	}
 
 	@PrePersist

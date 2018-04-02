@@ -27,7 +27,7 @@ public class Folder {
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	private String address;
+	private String name;
 
 	private Date creationDate;
 	
@@ -36,27 +36,25 @@ public class Folder {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<File> files;
 	
-	/*	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "parentId")
-	private Folder parent;
+	private int parentFolderId;
 	
-	@Enumerated(EnumType.ORDINAL)
+	/*@Enumerated(EnumType.ORDINAL)
 	private Flag flagId;
 	*/
 
-	public Folder(User user, String address) {
+	public Folder(User user, String name) {
 		super();
 		this.user = user;
-		this.address = address;
-		//this.creationDate = new Date();
+		this.name = name;
+		this.creationDate = new Date();
 	}
 	
-	public Folder(User user, String address, Folder folder) {
+	public Folder(User user, String name, int parentFolderId) {
 		super();
 		this.user = user;
-		this.address = address;
-		// this.folder = -1;
-		//this.creationDate = new Date();
+		this.name = name;
+		this.parentFolderId = parentFolderId;
+		this.creationDate = new Date();
 	}
 
 	protected Folder() {
@@ -85,21 +83,21 @@ public class Folder {
 		this.user = user;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getName() {
+		return name;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddress(String name) {
+		this.name = name;
 	}
 
-	/*public Folder getParent() {
-		return parent;
+	public int getParentFolderId() {
+		return parentFolderId;
 	}
 
-	public void setParent(Folder parent) {
-		this.parent = parent;
-	}*/
+	public void setParentFolderId(int parentFolderId) {
+		this.parentFolderId = parentFolderId;
+	}
 
 	public Date getCreationDate() {
 		return creationDate;
