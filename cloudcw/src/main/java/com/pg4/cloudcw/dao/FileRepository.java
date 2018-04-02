@@ -8,7 +8,6 @@ import com.pg4.cloudcw.entity.File;
 import com.pg4.cloudcw.entity.User;
 
 public interface FileRepository extends CrudRepository<File, Integer> {
-	
+	 File findById(int id);
 	 List<File> findByUserIdAndIsDeleted(int userId, boolean isDeleted);
-	 
 }

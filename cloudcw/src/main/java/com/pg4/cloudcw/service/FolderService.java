@@ -7,9 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.pg4.cloudcw.dao.FileRepository;
 import com.pg4.cloudcw.dao.FolderRepository;
-import com.pg4.cloudcw.entity.File;
 import com.pg4.cloudcw.entity.Folder;
 
 @Service
