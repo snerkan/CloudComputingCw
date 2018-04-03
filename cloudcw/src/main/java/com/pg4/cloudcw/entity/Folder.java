@@ -87,7 +87,7 @@ public class Folder {
 		return name;
 	}
 
-	public void setAddress(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

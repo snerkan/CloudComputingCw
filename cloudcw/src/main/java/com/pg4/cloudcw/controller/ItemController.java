@@ -37,15 +37,15 @@ public class ItemController {
 	@GetMapping("/items")
 	public String home(Model model) {
 		model.addAttribute("files", fileService.getAllByUserId(getUser().getId()));
-		model.addAttribute("folders", folderService.getAllByUserId());
+		model.addAttribute("folders", folderService.getAllByUserId(getUser().getId()));
 		return "items";
 	}
 
 	@GetMapping("/items/trash")
 	public String trash(Model model) {
 		model.addAttribute("files", fileService.getDeletedFilesByUserId(getUser().getId()));
-		model.addAttribute("folders", folderService.getDeletedFoldersByUserId());
-		return "trash";
+		model.addAttribute("folders", folderService.getDeletedFoldersByUserId(getUser().getId()));
+		return "/trash";
 	}
 
 	@PostMapping("/items/createFolder")
@@ -57,9 +57,10 @@ public class ItemController {
 			folderService.createFolder(new Folder(getUser(), name));
 		}
 		model.addAttribute("files", fileService.getAllByUserId(getUser().getId()));
-		model.addAttribute("folders", folderService.getAllByUserId());
+		model.addAttribute("folders", folderService.getAllByUserId(getUser().getId()));
 		return "redirect:/items";
 	}
+	
 	
 	
 	@PostMapping("/items/createFile")
@@ -72,36 +73,38 @@ public class ItemController {
 			fileService.createFile(new File (name, getUser(), "0"));
 		}
 		model.addAttribute("files", fileService.getAllByUserId(getUser().getId()));
-		model.addAttribute("folders", folderService.getAllByUserId());
+		model.addAttribute("folders", folderService.getAllByUserId(getUser().getId()));
 		return "redirect:/items";
 	}
 
-	@GetMapping("items/deleteFile/{id}")
+
+	@GetMapping("/items/deleteFile/{id}")
 	public String deleteFile(@PathVariable("id") int id, Model model) {
 		fileService.deleteFirstTime(id,getUser().getId());
+		
 		model.addAttribute("files", fileService.getAllByUserId(getUser().getId()));
-		model.addAttribute("folders", folderService.getAllByUserId());
+		model.addAttribute("folders", folderService.getAllByUserId(getUser().getId()));
 		return "redirect:/items";
 	}
 
-	@GetMapping("items/putBack/{id}")
+	@GetMapping("/items/putBack/{id}")
 	public String putBackFile(@PathVariable("id") int id, Model model) {
 		fileService.putBackFileFromTrash(id, getUser().getId());
-		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()), folderService.getDeletedFoldersByUserId());
-		return "redirect:/items/trash";
+		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()), folderService.getDeletedFoldersByUserId(getUser().getId()));
+		return "redirect:items/trash";
 	}
 	
 	@GetMapping("/items/trash/deleteFile/{id}")
 	public String deleteFromTrash(@PathVariable("id") int id, Model model) {
-		fileService.deleteFirstTime(getUser().getId(),getUser().getId());
-		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()), folderService.getDeletedFoldersByUserId());
+		fileService.deletePermanently(getUser().getId());
+		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()), folderService.getDeletedFoldersByUserId(getUser().getId()));
 		return "redirect:/items/trash";
 	}
 
 	@GetMapping("/items/trash/deleteAllFiles/")
 	public String deleteAll(Model model) {
 		fileService.deleteAllPermanently(getUser().getId());
-		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()), folderService.getDeletedFoldersByUserId());
+		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()), folderService.getDeletedFoldersByUserId(getUser().getId()));
 		return "redirect:/items/trash";
 	}
 

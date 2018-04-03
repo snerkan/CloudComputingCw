@@ -55,7 +55,7 @@
 		<li class="nav-item active"><a class="nav-link" href="#">Home
 				<span class="sr-only">(current)</span>
 		</a></li>
-		<li class="nav-item"><a class="nav-link" href="/trash">Trash</a></li>
+		<li class="nav-item"><a class="nav-link" href="/items/trash">Trash</a></li>
 	
 	
 	

@@ -29,14 +29,17 @@
 						<div class="btn-group">
 							<button type="button" class="btn btn-info dropdown-toggle"
 								data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false"  >Actions </button>
-							<div class="dropdown-menu" id="deleteDropdownButton" data-fileid= "${file.id}" >
+								aria-expanded="false">Actions</button>
+							<div class="dropdown-menu" id="deleteDropdownButton"
+								data-fileid="${file.id}">
 								<a class="dropdown-item" href="#">Download</a> <a
-									class="dropdown-item" href="#">Share</a> 
-									<a
+									class="dropdown-item" href="#">Share</a> <a
 									class="dropdown-item" data-toggle="modal"
-									data-target="#deleteModal" >Delete</a> <a class="dropdown-item"
-									data-toggle="modal" data-target="#renameModal">Rename</a>
+									data-target="#deleteModal"
+									data-fileid="/items/deleteFile/${file.id}">Delete</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#renameModal"
+									data-fileid="/items/deleteFile/${file.id}">Rename</a>
 								<div class="dropdown-divider">Move</div>
 								<a class="dropdown-item" href="#">Flag</a>
 							</div>
@@ -82,13 +85,11 @@
 
 
 <!-- Create File -->
-<div class="modal fade" id="createFileModal" tabindex="-1"
-	role="dialog">
+<div class="modal fade" id="createFileModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="createFileModalTitle">Create a
-					File</h5>
+				<h5 class="modal-title" id="createFileModalTitle">Create a File</h5>
 				<button type="Reset" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -97,14 +98,15 @@
 			<div class="modal-body">
 				<form action="/items/createFile" method="post">
 					<div class="form-group">
-						<label class="col-form-label">Please, enter a file name:</label>
-						<input type="hidden" class="form-control" id="parentId" name="parentId">
-						<input type="text" class="form-control" id="name" name="name">
+						<label class="col-form-label">Please, enter a file name:</label> <input
+							type="hidden" class="form-control" id="parentId" name="parentId" >
+						<input type="text" class="form-control" id="name" name="name" value = "New File">
 						<div class="modal-footer">
-							<button type="Reset" class="btn btn-secondary"  data-dismiss="modal">Close</button>
+							<button type="Reset" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
 							<button type="submit" class="btn btn-primary" value="Submit">Create</button>
-						</div>		
-					</div>	
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -130,13 +132,15 @@
 				<form action="/items/createFolder" method="post">
 					<div class="form-group">
 						<label class="col-form-label">Please, enter a folder name:</label>
-						<input type="hidden" class="form-control" id="parentId" name="parentId">
-						<input type="text" class="form-control" id="name" name="name">
+						<input type="hidden" class="form-control" id="parentId"
+							name="parentId"> <input type="text" class="form-control"
+							id="name" name="name">
 						<div class="modal-footer">
-							<button type="Reset" class="btn btn-secondary"  data-dismiss="modal">Close</button>
+							<button type="Reset" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
 							<button type="submit" class="btn btn-primary" value="Submit">Create</button>
-						</div>		
-					</div>	
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -159,7 +163,7 @@
 			<div class="modal-body">Are you sure?</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<a href=""  class="btn btn-primary" id="deleteButton" >Delete</a>	
+				<a href="" class="btn btn-primary" id="deleteButton">Delete</a>
 			</div>
 		</div>
 	</div>
@@ -175,16 +179,14 @@
 			colReorder : true
 		});
 	});
-	
-	$('#deleteDropdownButton').click(function() {
-	      var fileId = $(this).data('fileid');    
-	      $('#deleteModal').find('#deleteButton').attr('href', ("/items/deleteFile/" + fileId)) 
-	       //   $('#deleteModal').find('#deleteButton').prop("href", "/items/deleteFile/" + fileId)
-	});
 
-	$('#MyModal').on('hidden.bs.modal', function () {
-	    $(this).find('form').trigger('reset');
+	$('#deleteModal').on('show.bs.modal', function(event) {
+		var button = $(event.relatedTarget)
+		$(this).find('#deleteButton').attr('href', button.data('fileid'))
 	})
-	
+
+	$('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form').trigger('reset');
+	})
 </script>
 </html>

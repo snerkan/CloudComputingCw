@@ -5,5 +5,5 @@
 <html lang="en">
 
 <jsp:include page="Header.jsp"></jsp:include>
-Welcome!
+Welcome! To see content <a href="/items" class="btn" id="deleteButton">Click here!</a>
 </html>

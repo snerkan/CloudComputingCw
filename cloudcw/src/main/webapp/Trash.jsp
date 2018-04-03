@@ -31,11 +31,12 @@
 							<button type="button" class="btn btn-info dropdown-toggle"
 								data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">Actions</button>
-							<div class="dropdown-menu" id="deleteDropdownButton"
-								data-fileid="${file.id}">
+							<div class="dropdown-menu" id="deleteDropdownButton">
 								<a class="dropdown-item" data-toggle="modal"
-									data-target="#deleteModal">Put Back</a> <a class="dropdown-item"
-									data-toggle="modal" data-target="#deleteModal">Delete Permanently </a>
+									data-target="#deleteModal">Put Back</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#deleteModal"
+									data-fileid="/items/trash/deleteFile/${file.id}">Delete</a>
 							</div>
 						</div>
 					</td>
@@ -52,16 +53,18 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="deleteModalTitle">Delete Permanently</h5>
+				<h5 class="modal-title" id="deleteModalTitle">Delete
+					Permanently</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">Are you sure? You can't undo this action</div>
+			<div class="modal-body">Are you sure? You can't undo this
+				action</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<a href="" class="btn btn-primary" id="deleteButton">Delete</a>
+				<a href="" class="btn btn-primary"  id="deleteButton">Delete</a>
 			</div>
 		</div>
 	</div>
@@ -78,15 +81,9 @@
 		});
 	});
 
-	$('#deleteDropdownButton').click(
-			function() {
-				var fileId = $(this).data('fileid');
-				$('#deleteModal').find('#deleteButton').attr('href',
-						("/items/trash/deleteFile/" + fileId))
-			});
-
-	$('#MyModal').on('hidden.bs.modal', function() {
-		$(this).find('form').trigger('reset');
+	$('#deleteModal').on('show.bs.modal', function(event) {
+		var button = $(event.relatedTarget)
+		$(this).find('#deleteButton').attr('href', button.data('fileid'))
 	})
-</script>
-</html>
+	</script>
+	</html>
