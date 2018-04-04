@@ -23,6 +23,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+
+		<!-- <INSTANCE_CONNECTION_NAME>scenic-firefly-199015:europe-west2:instanceforcw</INSTANCE_CONNECTION_NAME> 
+			<user>cloudcwuser</user> <password>m4hvcwA45iyvItMK</password> <database>cloudcwdb</database> -->
+
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
 	<dependencies>
@@ -36,8 +42,23 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-
+		<dependency>
+			<groupId>com.google.appengine.tools</groupId>
+			<artifactId>appengine-gcs-client</artifactId>
+			<version>0.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>1.24.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud.sql</groupId>
+			<!-- If using MySQL 6.x driver, use mysql-socket-factory-connector-j-6 
+				instead -->
+			<artifactId>mysql-socket-factory</artifactId>
+			<version>1.0.5</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -88,6 +109,11 @@
 			<artifactId>jquery</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+		  <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.3.2</version>
+    </dependency>
 	</dependencies>
 
 	<build>

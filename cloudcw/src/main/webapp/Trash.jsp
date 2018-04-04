@@ -21,6 +21,33 @@
 			</tr>
 		</thead>
 		<tbody>
+			<c:forEach var="folder" items="${folders}">
+				<tr>
+					<td>${folder.name}</td>
+					<td>${folder.creationDate}</td>
+					<td>-</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-info dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">Actions</button>
+							<div class="dropdown-menu" id="deleteDropdownButton"
+								data-fileid="${folder.id}">
+								<a class="dropdown-item" href="#">Download</a> <a
+									class="dropdown-item" href="#">Share</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#deleteModal"
+									data-fileid="/items/deleteFolder/${folder.id}">Delete</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#renameModal"
+									data-fileid="/items/renameFolder/${folder.id}">Rename</a>
+								<div class="dropdown-divider">Move</div>
+								<a class="dropdown-item" href="#">Flag</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</c:forEach>
 			<c:forEach var="file" items="${files}">
 				<tr>
 					<td>${file.name}</td>
@@ -64,7 +91,7 @@
 				action</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<a href="" class="btn btn-primary"  id="deleteButton">Delete</a>
+				<a href="" class="btn btn-primary" id="deleteButton">Delete</a>
 			</div>
 		</div>
 	</div>
@@ -85,5 +112,5 @@
 		var button = $(event.relatedTarget)
 		$(this).find('#deleteButton').attr('href', button.data('fileid'))
 	})
-	</script>
-	</html>
+</script>
+</html>

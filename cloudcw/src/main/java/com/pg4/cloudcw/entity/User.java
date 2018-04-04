@@ -4,21 +4,30 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(unique = true)
 	private int id;
+	
 	private String password;
+	
+	@NotNull
+	@Column(unique = true)
 	private String email;
+	
 	private Date creationDate;
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -26,6 +35,12 @@ public class User {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Folder> folders;
+	
+	@ManyToMany(mappedBy = "user")
+	 private Set<File> filesOfOtherUsers;
+	
+	@ManyToMany(mappedBy = "user")
+	 private Set<Folder> foldersOfOtherUsers;
 	
 	public User() {
 		super();

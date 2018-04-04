@@ -20,6 +20,34 @@
 			</tr>
 		</thead>
 		<tbody>
+			<c:forEach var="folder" items="${folders}">
+				<tr>
+					<td>${folder.name}</td>
+					<td>${folder.creationDate}</td>
+					<td>-</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-info dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">Actions</button>
+							<div class="dropdown-menu" id="deleteDropdownButton"
+								data-fileid="${folder.id}">
+								<a class="dropdown-item" href="#">Download</a> <a
+									class="dropdown-item" href="#">Share</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#deleteModal"
+									data-fileid="/items/deleteFolder/${folder.id}">Delete</a> <a
+									class="dropdown-item" data-toggle="modal"
+									data-target="#renameModal"
+									data-fileid="/items/renameFolder/${folder.id}">Rename</a>
+								<div class="dropdown-divider">Move</div>
+								<a class="dropdown-item" href="#">Flag</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</c:forEach>
+
 			<c:forEach var="file" items="${files}">
 				<tr>
 					<td>${file.name}</td>
@@ -39,7 +67,7 @@
 									data-fileid="/items/deleteFile/${file.id}">Delete</a> <a
 									class="dropdown-item" data-toggle="modal"
 									data-target="#renameModal"
-									data-fileid="/items/deleteFile/${file.id}">Rename</a>
+									data-fileid="/items/renameFile/${file.id}">Rename</a>
 								<div class="dropdown-divider">Move</div>
 								<a class="dropdown-item" href="#">Flag</a>
 							</div>
@@ -89,22 +117,25 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="createFileModalTitle">Create a File</h5>
+				<h5 class="modal-title" id="createFileModalTitle">Upload a File</h5>
 				<button type="Reset" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="/items/createFile" method="post">
+				<form action="/items/createFile" method="post"
+					enctype="multipart/form-data">
 					<div class="form-group">
-						<label class="col-form-label">Please, enter a file name:</label> <input
-							type="hidden" class="form-control" id="parentId" name="parentId" >
-						<input type="text" class="form-control" id="name" name="name" value = "New File">
+						<label class="col-form-label">Please, choose your file</label> <input
+							type="file" class="form-control-file" name="file" id="file"
+							class="form-control" /> <!--  <input type="hidden" name="parentId"
+							value=0 />-->
 						<div class="modal-footer">
 							<button type="Reset" class="btn btn-secondary"
 								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary" value="Submit">Create</button>
+							<button type="submit" id="fileSubmit" class="btn btn-primary"
+								value="Submit" disabled>Upload</button>
 						</div>
 					</div>
 				</form>
@@ -133,8 +164,8 @@
 					<div class="form-group">
 						<label class="col-form-label">Please, enter a folder name:</label>
 						<input type="hidden" class="form-control" id="parentId"
-							name="parentId"> <input type="text" class="form-control"
-							id="name" name="name">
+							name="parentId" value="0"> <input type="text"
+							class="form-control" id="name" name="name" value="New Folder">
 						<div class="modal-footer">
 							<button type="Reset" class="btn btn-secondary"
 								data-dismiss="modal">Close</button>
@@ -178,7 +209,16 @@
 			ordering : true,
 			colReorder : true
 		});
-	});
+	}); 
+	
+	$(document).ready(function(){
+		        $('input:file').change(
+		            function(){
+		                if ($(this).val()) {
+		                    $('#fileSubmit').attr('disabled',false);   
+		                    // $('input:submit').removeAttr('disabled'); 
+		                }});    }); 
+
 
 	$('#deleteModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)
