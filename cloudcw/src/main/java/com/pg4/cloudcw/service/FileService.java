@@ -75,10 +75,6 @@ public class FileService {
 
 	// @Async
 	public void uploadFile(FileItemStream fileStream, Folder folder, User user) throws InterruptedException {
-
-		// log.info("###Start Processing with Thread id: " +
-		// Thread.currentThread().getId());
-
 		// For unique name
 		String uniqueName = DateTime.now(DateTimeZone.UTC).toString(DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS"));
 		String fileFirstName = fileStream.getName();

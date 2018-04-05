@@ -17,7 +17,8 @@
 				<th>Name</th>
 				<th>Creation Date</th>
 				<th>Size</th>
-				<th></th>
+				<th><a href="/items/trash/deleteAllItems/"
+					class="btn btn-light" id="deleteButton">Delete All</a></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,23 +32,18 @@
 							<button type="button" class="btn btn-info dropdown-toggle"
 								data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">Actions</button>
-							<div class="dropdown-menu" id="deleteDropdownButton"
-								data-fileid="${folder.id}">
-								<a class="dropdown-item" href="#">Download</a> <a
-									class="dropdown-item" href="#">Share</a> <a
-									class="dropdown-item" data-toggle="modal"
+							<div class="dropdown-menu">
+								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/deleteFolder/${folder.id}">Delete</a> <a
-									class="dropdown-item" data-toggle="modal"
-									data-target="#renameModal"
-									data-fileid="/items/renameFolder/${folder.id}">Rename</a>
-								<div class="dropdown-divider">Move</div>
-								<a class="dropdown-item" href="#">Flag</a>
+									data-fileid="/items/trash/deleteFolder/${folder.id}">Delete</a>
+								<a href="/items/trash/putBackFile/${folder.id}"
+									class="dropdown-item" id="deleteButton">Put Back</a>
 							</div>
 						</div>
 					</td>
 				</tr>
 			</c:forEach>
+
 			<c:forEach var="file" items="${files}">
 				<tr>
 					<td>${file.name}</td>
@@ -58,12 +54,12 @@
 							<button type="button" class="btn btn-info dropdown-toggle"
 								data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">Actions</button>
-							<div class="dropdown-menu" id="deleteDropdownButton">
+							<div class="dropdown-menu">
 								<a class="dropdown-item" data-toggle="modal"
-									data-target="#deleteModal">Put Back</a> <a
-									class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/trash/deleteFile/${file.id}">Delete</a>
+									data-fileid="/items/trash/deleteFile/${file.id}">Delete</a> <a
+									href="/items/trash/putBackFile/${file.id}"
+									class="dropdown-item" id="deleteButton">Put Back</a>
 							</div>
 						</div>
 					</td>
@@ -106,7 +102,9 @@
 			ordering : true,
 			colReorder : true
 		});
+		 
 	});
+	
 
 	$('#deleteModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)

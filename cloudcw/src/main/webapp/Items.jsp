@@ -13,6 +13,7 @@
 	<table id="contentTable" class="table" style="width: 100%">
 		<thead>
 			<tr>
+				<th>Type</th>
 				<th>Name</th>
 				<th>Creation Date</th>
 				<th>Size</th>
@@ -22,6 +23,7 @@
 		<tbody>
 			<c:forEach var="folder" items="${folders}">
 				<tr>
+					<td>Folder</td>
 					<td>${folder.name}</td>
 					<td>${folder.creationDate}</td>
 					<td>-</td>
@@ -32,16 +34,18 @@
 								aria-expanded="false">Actions</button>
 							<div class="dropdown-menu" id="deleteDropdownButton"
 								data-fileid="${folder.id}">
-								<a class="dropdown-item" href="#">Download</a> <a
-									class="dropdown-item" href="#">Share</a> <a
-									class="dropdown-item" data-toggle="modal"
+								<!--  	<a class="dropdown-item" href="#">Download</a> <a
+									class="dropdown-item" href="#">Share</a>
+									-->
+								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/deleteFolder/${folder.id}">Delete</a> <a
+									data-fileid="/items/deleteFolder/${folder.id}">Delete</a>
+								<!-- <a
 									class="dropdown-item" data-toggle="modal"
 									data-target="#renameModal"
 									data-fileid="/items/renameFolder/${folder.id}">Rename</a>
-								<div class="dropdown-divider">Move</div>
-								<a class="dropdown-item" href="#">Flag</a>
+									<div class="dropdown-divider">Move</div>
+								<a class="dropdown-item" href="#">Flag</a> -->
 							</div>
 						</div>
 					</td>
@@ -50,6 +54,7 @@
 
 			<c:forEach var="file" items="${files}">
 				<tr>
+					<td>File</td>
 					<td>${file.name}</td>
 					<td>${file.creationDate}</td>
 					<td>-</td>
@@ -60,16 +65,18 @@
 								aria-expanded="false">Actions</button>
 							<div class="dropdown-menu" id="deleteDropdownButton"
 								data-fileid="${file.id}">
-								<a class="dropdown-item" href="#">Download</a> <a
-									class="dropdown-item" href="#">Share</a> <a
-									class="dropdown-item" data-toggle="modal"
+								<a class="dropdown-item" href="${file.storageAddress}">Download</a>
+								<a class="dropdown-item" data-toggle="modal"
+									data-target="#shareModal" data-fileid="${file.storageAddress}">Share</a>
+								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/deleteFile/${file.id}">Delete</a> <a
+									data-fileid="/items/deleteFile/${file.id}">Delete</a>
+								<!-- <a
 									class="dropdown-item" data-toggle="modal"
 									data-target="#renameModal"
 									data-fileid="/items/renameFile/${file.id}">Rename</a>
-								<div class="dropdown-divider">Move</div>
-								<a class="dropdown-item" href="#">Flag</a>
+									<div class="dropdown-divider">Move</div>
+								<a class="dropdown-item" href="#">Flag</a> -->
 							</div>
 						</div>
 					</td>
@@ -81,34 +88,31 @@
 
 
 
-<!-- Rename Item -->
-<div class="modal fade" id="renameModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-dialog-centered" role="document">
+
+
+
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="renameModalTitle">Rename</h5>
+				<h5 class="modal-title" id="shareModalLabel">Share the Link!
+				</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label class="col-form-label">Please, enter a new name:</label> <input
-							type="hidden" class="form-control" id="newName" value=${file.id}>
-						<input type="text" class="form-control" id="newName"
-							value=${file.name}>
-					</div>
-				</form>
-			</div>
+			<div class="modal-body" id="shareModelBody"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+
 
 
 
@@ -129,7 +133,8 @@
 					<div class="form-group">
 						<label class="col-form-label">Please, choose your file</label> <input
 							type="file" class="form-control-file" name="file" id="file"
-							class="form-control" /> <!--  <input type="hidden" name="parentId"
+							class="form-control" />
+						<!--  <input type="hidden" name="parentId"
 							value=0 />-->
 						<div class="modal-footer">
 							<button type="Reset" class="btn btn-secondary"
@@ -209,24 +214,36 @@
 			ordering : true,
 			colReorder : true
 		});
-	}); 
-	
-	$(document).ready(function(){
-		        $('input:file').change(
-		            function(){
-		                if ($(this).val()) {
-		                    $('#fileSubmit').attr('disabled',false);   
-		                    // $('input:submit').removeAttr('disabled'); 
-		                }});    }); 
+	});
 
+	$(document).ready(function() {
+		$('input:file').change(function() {
+			if ($(this).val()) {
+				$('#fileSubmit').attr('disabled', false);
+				// $('input:submit').removeAttr('disabled'); 
+			}
+		});
+	});
+
+	$(document).ready(function() {
+		$("#navbarDropdownNew").removeClass('invisible')
+
+	});
 
 	$('#deleteModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)
 		$(this).find('#deleteButton').attr('href', button.data('fileid'))
 	})
 
+	$('#shareModal').on('show.bs.modal', function(event) {
+		var button = $(event.relatedTarget)
+		var link = " " + button.data('fileid')
+		$(this).find('#shareModelBody').append(link)
+	})
+
 	$('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form').trigger('reset');
+		$(this).find('.modal-body').trigger('reset');
 	})
 </script>
 </html>

@@ -13,7 +13,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 
 <!-- Bootstrap CSS -->
@@ -34,11 +35,20 @@
 	crossorigin="anonymous"></script>
 
 <!-- Datatables -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
+<!-- Google Sign-In for Websites  -->
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id"
+	content="629296123157-nt7agiuja56eqeqft89mmg154peog2ul.apps.googleusercontent.com">
+<!--  gapi.auth2.init() -->
 
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light"> <a
@@ -52,29 +62,40 @@
 
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	<ul class="navbar-nav mr-auto">
-		<li class="nav-item active"><a class="nav-link" href="#">Home
+		<li class="nav-item active"><a class="nav-link" href="/items">Home
 				<span class="sr-only">(current)</span>
 		</a></li>
-		<li class="nav-item"><a class="nav-link" href="/items/trash">Trash</a></li>
-	
-	
-	
-		<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
-			href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+		<li class="nav-item active"><a class="nav-link"
+			href="/items/trash">Trash</a></li>
+
+		<li class="nav-item active dropdown"><a
+			class="nav-link dropdown-toggle invisible" href="#"
+			id="navbarDropdownNew" role="button" data-toggle="dropdown"
 			aria-haspopup="true" aria-expanded="false"> New </a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item"data-toggle="modal" data-target="#createFileModal">Upload File</a> 
+				<a class="dropdown-item" data-toggle="modal"
+					data-target="#createFileModal">Upload File</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item"  data-toggle="modal" data-target="#createFolderModal">Create Folder</a>
+				<a class="dropdown-item" data-toggle="modal"
+					data-target="#createFolderModal">Create Folder</a>
 			</div></li>
-
-		</li>
 	</ul>
-	<form class="form-inline my-2 my-lg-0">
+</div>
+<!--  <form class="form-inline my-2 my-lg-0">
 		<input class="form-control mr-sm-2" type="search" placeholder="Search"
 			aria-label="Search">
 		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-	</form>
-</div>
+	</form>-->
+<li class="nav-item"><a href="#" onclick="signOut();">Sign out</a></li>
 </nav>
+<br><br><br>
+
+<script>
+	function signOut() {
+		var auth2 = gapi.auth2.getAuthInstance();
+		auth2.signOut().then(function() {
+			console.log('User signed out.');
+		});
+	}
+</script>
 </html>

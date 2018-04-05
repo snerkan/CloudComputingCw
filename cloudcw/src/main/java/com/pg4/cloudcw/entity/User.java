@@ -21,9 +21,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(unique = true)
 	private int id;
-	
-	private String password;
-	
+		
 	@NotNull
 	@Column(unique = true)
 	private String email;
@@ -46,9 +44,8 @@ public class User {
 		super();
 	}
 
-	public User(String password, String email) {
+	public User(String email) {
 		super();
-		this.password = password;
 		this.email = email;
 	}
 
@@ -63,14 +60,6 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getEmail() {

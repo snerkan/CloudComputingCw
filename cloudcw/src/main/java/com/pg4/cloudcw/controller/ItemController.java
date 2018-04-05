@@ -209,19 +209,19 @@ public class ItemController {
 	
 	
 	// put back FILE from Trash
-	@GetMapping("/items/putBackFile/{id}")
+	@GetMapping("/items/trash/putBackFile/{id}")
 	public String putBackFile(@PathVariable("id") int id, Model model) {
 		fileService.putBackFileFromTrash(id, getUser().getId());
 		model = prepareModelsForTrash(model);
-		return "redirect:items/trash";
+		return "redirect:/items/trash";
 	}
 
 	// put back FOLDER from Trash 
-	@GetMapping("/items/putBackFolder/{id}")
+	@GetMapping("/items/trash/putBackFolder/{id}")
 	public String putBackFolder(@PathVariable("id") int id, Model model) {
 		folderService.putBackFolderFromTrash(id, getUser().getId());
 		model = prepareModelsForTrash(model);
-		return "redirect:items/trash";
+		return "redirect:/items/trash";
 	}	
 	
 	// Delete FILE from Trash
@@ -276,7 +276,7 @@ public class ItemController {
 		if (user == null) {
 			user = userService.getUserById(1);
 			if (user.equals(null)) {
-				user = new User("0", "user");
+				user = new User("user");
 			}
 		}
 		return user;
