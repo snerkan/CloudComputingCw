@@ -24,7 +24,9 @@
 			<c:forEach var="folder" items="${folders}">
 				<tr>
 					<td>Folder</td>
-					<td>${folder.name}</td>
+					<td><a href="/items/folder/${folder.id}" data-toggle="modal"
+					data-target="#deleteAllModal"
+					id="deleteButton">${folder.name}</a></td>
 					<td>${folder.creationDate}</td>
 					<td>-</td>
 					<td>

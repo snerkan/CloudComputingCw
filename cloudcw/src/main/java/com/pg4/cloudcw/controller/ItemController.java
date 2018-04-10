@@ -49,12 +49,7 @@ public class ItemController {
 		return "items";
 	}
 
-	@GetMapping("/items/trash")
-	public String trash(Model model) {
-		prepareModelsForTrash(model);
-		return "/trash";
-	}
-	
+
 	// Create Folder
 	@PostMapping("/items/createFolder")
 	public String createFolder(@RequestParam("name") String name, @RequestParam("parentId") String parentId,
@@ -208,50 +203,6 @@ public class ItemController {
 	}
 	
 	
-	// put back FILE from Trash
-	@GetMapping("/items/trash/putBackFile/{id}")
-	public String putBackFile(@PathVariable("id") int id, Model model) {
-		fileService.putBackFileFromTrash(id, getUser().getId());
-		model = prepareModelsForTrash(model);
-		return "redirect:/items/trash";
-	}
-
-	// put back FOLDER from Trash 
-	@GetMapping("/items/trash/putBackFolder/{id}")
-	public String putBackFolder(@PathVariable("id") int id, Model model) {
-		folderService.putBackFolderFromTrash(id, getUser().getId());
-		model = prepareModelsForTrash(model);
-		return "redirect:/items/trash";
-	}	
-	
-	// Delete FILE from Trash
-	@GetMapping("/items/trash/deleteFile/{id}")
-	public String deleteFileFromTrash(@PathVariable("id") int id, Model model) {
-		fileService.deletePermanently(id);
-		model = prepareModelsForTrash(model);
-		return "redirect:/items/trash";
-	}
-	
-	// Delete FOLDER from Trash
-	@GetMapping("/items/trash/deleteFolder/{id}")
-	public String deleteFolderFromTrash(@PathVariable("id") int id, Model model) {
-		folderService.deletePermanently(id);
-		model = prepareModelsForTrash(model); 
-		return "redirect:/items/trash";
-	}
-
-	
-	
-	// Delete ALL from Trash
-	@GetMapping("/items/trash/deleteAllItems/")
-	public String deleteAll(Model model) {
-		fileService.deleteAllPermanently(getUser().getId());
-		folderService.deleteAllPermanently(getUser().getId());
-		model = prepareModels(model, fileService.getDeletedFilesByUserId(getUser().getId()),
-				folderService.getDeletedFoldersByUserId(getUser().getId()));
-		return "redirect:/items/trash";
-	}
-	
 	
 	public void prepareModelsForIndex(Model model) {
 		model.addAttribute("files", fileService.getAllByUserId(getUser().getId()));
@@ -259,11 +210,6 @@ public class ItemController {
 	//	return model;
 	}
 	
-	public Model prepareModelsForTrash(Model model) {
-		model.addAttribute("files", fileService.getDeletedFilesByUserId(getUser().getId()));
-		model.addAttribute("folders", folderService.getDeletedFoldersByUserId(getUser().getId()));
-		return model;
-	}
 	
 	public Model prepareModels(Model model, @Nullable Object fileObj, @Nullable Object folderObj) {
 		model.addAttribute("files", fileObj);

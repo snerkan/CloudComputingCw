@@ -66,7 +66,7 @@
 				<span class="sr-only">(current)</span>
 		</a></li>
 		<li class="nav-item active"><a class="nav-link"
-			href="/items/trash">Trash</a></li>
+			href="/trash">Trash</a></li>
 
 		<li class="nav-item active dropdown"><a
 			class="nav-link dropdown-toggle invisible" href="#"

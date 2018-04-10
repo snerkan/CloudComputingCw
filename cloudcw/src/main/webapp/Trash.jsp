@@ -17,8 +17,9 @@
 				<th>Name</th>
 				<th>Creation Date</th>
 				<th>Size</th>
-				<th><a href="/items/trash/deleteAllItems/"
-					class="btn btn-light" id="deleteButton">Delete All</a></th>
+				<th><a href="/trash/deleteAllItems/" data-toggle="modal"
+					data-target="#deleteAllModal" class="btn btn-light"
+					id="deleteButton">Delete All</a></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,9 +36,9 @@
 							<div class="dropdown-menu">
 								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/trash/deleteFolder/${folder.id}">Delete</a>
-								<a href="/items/trash/putBackFile/${folder.id}"
-									class="dropdown-item" id="deleteButton">Put Back</a>
+									data-fileid="/trash/deleteFolder/${folder.id}">Delete</a> <a
+									href="/trash/putBackFile/${folder.id}" class="dropdown-item"
+									id="deleteButton">Put Back</a>
 							</div>
 						</div>
 					</td>
@@ -57,9 +58,9 @@
 							<div class="dropdown-menu">
 								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/trash/deleteFile/${file.id}">Delete</a> <a
-									href="/items/trash/putBackFile/${file.id}"
-									class="dropdown-item" id="deleteButton">Put Back</a>
+									data-fileid="/trash/deleteFile/${file.id}">Delete</a> <a
+									href="/trash/putBackFile/${file.id}" class="dropdown-item"
+									id="deleteButton">Put Back</a>
 							</div>
 						</div>
 					</td>
@@ -93,6 +94,31 @@
 	</div>
 </div>
 
+
+
+<!-- Delete All Item -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteAllModalTitle">Delete All
+					Permanently</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">Are you sure? You can't undo this
+				action</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<a href="/trash/deleteAllItems/" class="btn btn-primary"
+					id="deleteButton">Delete All</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#contentTable').DataTable({
@@ -102,13 +128,12 @@
 			ordering : true,
 			colReorder : true
 		});
-		 
+
 	});
-	
 
 	$('#deleteModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)
 		$(this).find('#deleteButton').attr('href', button.data('fileid'))
-	})
+	});
 </script>
 </html>
