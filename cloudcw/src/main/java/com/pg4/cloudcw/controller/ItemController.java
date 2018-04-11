@@ -92,17 +92,18 @@ public class ItemController {
 	}
 
 	// Change FILE Flag
-	@GetMapping("/items/changeFileFlag/{id}")
-	public String changeFileFlag(@PathVariable("id") int id, @RequestParam("newflag") Flag newflag, Model model) {
-		fileService.changeFileFlag(id, getUser().getId(), newflag);
+	@GetMapping("/items/changeFileFlag/{id}/{newflag}")
+	public String changeFileFlag(@PathVariable("id") int id, @PathVariable("newflag") String newflag, Model model) {
+		System.out.println(Flag.valueOf(newflag));
+		fileService.changeFileFlag(id, getUser().getId(), Flag.valueOf(newflag));
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
 
 	// Change FOLDER Flag
-	@GetMapping("/items/changeFolderFlag/{id}")
-	public String changeFolderFlag(@PathVariable("id") int id, @RequestParam("newflag") Flag newflag, Model model) {
-		folderService.changeFolderFlag(id, getUser().getId(), newflag);
+	@GetMapping("/items/changeFolderFlag/{id}/{newflag}")
+	public String changeFolderFlag(@PathVariable("id") int id,  @PathVariable("newflag") String newflag, Model model) {
+		folderService.changeFolderFlag(id, getUser().getId(), Flag.valueOf(newflag));
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}

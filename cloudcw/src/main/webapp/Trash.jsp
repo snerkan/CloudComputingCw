@@ -16,7 +16,6 @@
 			<tr>
 				<th>Name</th>
 				<th>Creation Date</th>
-				<th>Size</th>
 				<th><a href="/trash/deleteAllItems/" data-toggle="modal"
 					data-target="#deleteAllModal" class="btn btn-light"
 					id="deleteButton">Delete All</a></th>
@@ -27,7 +26,6 @@
 				<tr>
 					<td>${folder.name}</td>
 					<td>${folder.creationDate}</td>
-					<td>-</td>
 					<td>
 						<div class="btn-group">
 							<button type="button" class="btn btn-info dropdown-toggle"
@@ -49,7 +47,6 @@
 				<tr>
 					<td>${file.name}</td>
 					<td>${file.creationDate}</td>
-					<td>-</td>
 					<td>
 						<div class="btn-group">
 							<button type="button" class="btn btn-info dropdown-toggle"

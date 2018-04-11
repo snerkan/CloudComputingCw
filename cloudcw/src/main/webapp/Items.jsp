@@ -16,7 +16,7 @@
 				<th>Type</th>
 				<th>Name</th>
 				<th>Creation Date</th>
-				<th>Size</th>
+				<th>Flag</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -26,7 +26,16 @@
 					<td>Folder</td>
 					<td><a href="/items/folder/${folder.id}" id="folderButton">${folder.name}</a></td>
 					<td>${folder.creationDate}</td>
-					<td>-</td>
+					<td><div class="btn-group">
+							<button type="button" class="btn  btn-outline-info dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">${folder.flag}</button>
+							<div class="dropdown-menu" id="flagDropdownButton">
+								<c:forEach var="flag" items="${flags}">
+									<a class="dropdown-item" href="/items/changeFolderFlag/${folder.id}/${flag}">${flag} </a>
+								</c:forEach>
+							</div>
+						</div></td>
 					<td>
 						<div class="btn-group">
 							<button type="button" class="btn btn-info dropdown-toggle"
@@ -39,9 +48,8 @@
 									-->
 								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/deleteFolder/${folder.id}">Delete</a>
-									
-									 <a class="dropdown-item" data-toggle="modal"
+									data-fileid="/items/deleteFolder/${folder.id}">Delete</a> <a
+									class="dropdown-item" data-toggle="modal"
 									data-target="#renameModal"
 									data-fileid="/items/renameFolder/${folder.id}"
 									data-oldName="${folder.name}">Rename</a>
@@ -59,7 +67,17 @@
 					<td>File</td>
 					<td>${file.name}</td>
 					<td>${file.creationDate}</td>
-					<td>-</td>
+					<td><div class="btn-group">
+							<button type="button" class="btn  btn-outline-info dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">${file.flag}</button>
+							<div class="dropdown-menu" id="flagDropdownButton">
+								<c:forEach var="flag" items="${flags}">
+									<a class="dropdown-item" href="/items/changeFileFlag/${file.id}/${flag}">${flag}</a>
+								</c:forEach>
+							</div>
+						</div>
+					</td>
 					<td>
 						<div class="btn-group">
 							<button type="button" class="btn btn-info dropdown-toggle"
@@ -72,12 +90,12 @@
 									data-target="#shareModal" data-fileid="${file.storageAddress}">Share</a>
 								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
-									data-fileid="/items/deleteFile/${file.id}">Delete</a>
-								 <a class="dropdown-item" data-toggle="modal"
+									data-fileid="/items/deleteFile/${file.id}">Delete</a> <a
+									class="dropdown-item" data-toggle="modal"
 									data-target="#renameModal"
 									data-fileid="/items/renameFile/${file.id}"
 									data-oldName="${file.name}">Rename</a>
-									<div class="dropdown-divider">Move</div>
+								<div class="dropdown-divider">Move</div>
 								<a class="dropdown-item" href="#">Flag</a> -->
 							</div>
 						</div>
@@ -92,13 +110,11 @@
 
 
 <!-- Rename Modal -->
-<div class="modal fade" id="renameModal" tabindex="-1"
-	role="dialog">
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="renameModalTitle">Rename 
-					Folder</h5>
+				<h5 class="modal-title" id="renameModalTitle">Rename Folder</h5>
 				<button type="Reset" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -107,8 +123,8 @@
 			<div class="modal-body">
 				<form action="" method="post" id="renameForm">
 					<div class="form-group">
-						<label class="col-form-label">Please, enter a new name:</label>
-						 <input type="text" class="form-control" id="newName" name="newName" >
+						<label class="col-form-label">Please, enter a new name:</label> <input
+							type="text" class="form-control" id="newName" name="newName">
 						<div class="modal-footer">
 							<button type="Reset" class="btn btn-secondary"
 								data-dismiss="modal">Close</button>
@@ -164,8 +180,8 @@
 				<form action="/items/createFile/${folderId}" method="post"
 					enctype="multipart/form-data">
 					<div class="form-group">
-						<label class="col-form-label">Please, choose your file:</label> 
-						<input type="file" class="form-control-file" name="file" id="file" />
+						<label class="col-form-label">Please, choose your file:</label> <input
+							type="file" class="form-control-file" name="file" id="file" />
 						<div class="modal-footer">
 							<button type="Reset" class="btn btn-secondary"
 								data-dismiss="modal">Close</button>
@@ -268,10 +284,10 @@
 	$('#renameModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)
 		$(this).find('#renameForm').attr('action', button.data('fileid'))
-		var oldName=button.data('oldname').split(".")
+		var oldName = button.data('oldname').split(".")
 		$(this).find('#newName').val(oldName[0])
 	});
-	
+
 	$('#shareModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)
 		var link = " " + button.data('fileid')
