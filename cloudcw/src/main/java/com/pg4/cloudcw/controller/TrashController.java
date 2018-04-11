@@ -1,6 +1,10 @@
 package com.pg4.cloudcw.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -99,9 +103,15 @@ public class TrashController {
 	// TODO: User
 	public User getUser() {
 		if (user == null) {
-			user = userService.getUserById(1);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String email = "";
+			if (!(authentication instanceof AnonymousAuthenticationToken)) {
+				DefaultOAuth2User oAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
+				email = (String)oAuth2User.getAttributes().get("email");
+			}			
+			user = userService.getUserByEmail(email);
 			if (user.equals(null)) {
-				user = new User("user");
+				user = new User(email);
 			}
 		}
 		return user;

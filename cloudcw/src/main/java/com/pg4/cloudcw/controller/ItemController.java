@@ -1,6 +1,9 @@
 package com.pg4.cloudcw.controller;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,14 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.appengine.repackaged.com.google.common.flogger.parser.ParseException;
 import com.pg4.cloudcw.entity.File;
 import com.pg4.cloudcw.entity.Flag;
 import com.pg4.cloudcw.entity.Folder;
@@ -43,8 +55,11 @@ public class ItemController {
 	// TODO: User
 	User user;
 
+	@Autowired
+	private OAuth2AuthorizedClientService authorizedClientService;
+
 	@GetMapping("/items")
-	public String home(Model model) {
+	public String home(Model model) throws ParseException {
 		prepareModelsForIndex(model, 0);
 		return "items";
 	}
@@ -67,7 +82,8 @@ public class ItemController {
 
 	// Upload File
 	@PostMapping("/items/createFile/{folderId}")
-	public void createFile(@PathVariable("folderId") int folderId, HttpServletRequest request, Model model, HttpServletResponse response) throws ServletException, IOException {
+	public void createFile(@PathVariable("folderId") int folderId, HttpServletRequest request, Model model,
+			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Folder parentFolder = folderService.getFolderById(folderId);
 			// Getting files
@@ -88,13 +104,12 @@ public class ItemController {
 		}
 		prepareModelsForIndex(model, folderId);
 		response.sendRedirect("/items");
-		
+
 	}
 
 	// Change FILE Flag
 	@GetMapping("/items/changeFileFlag/{id}/{newflag}")
 	public String changeFileFlag(@PathVariable("id") int id, @PathVariable("newflag") String newflag, Model model) {
-		System.out.println(Flag.valueOf(newflag));
 		fileService.changeFileFlag(id, getUser().getId(), Flag.valueOf(newflag));
 		prepareModelsForIndex(model);
 		return "redirect:/items";
@@ -102,7 +117,7 @@ public class ItemController {
 
 	// Change FOLDER Flag
 	@GetMapping("/items/changeFolderFlag/{id}/{newflag}")
-	public String changeFolderFlag(@PathVariable("id") int id,  @PathVariable("newflag") String newflag, Model model) {
+	public String changeFolderFlag(@PathVariable("id") int id, @PathVariable("newflag") String newflag, Model model) {
 		folderService.changeFolderFlag(id, getUser().getId(), Flag.valueOf(newflag));
 		prepareModelsForIndex(model);
 		return "redirect:/items";
@@ -177,7 +192,7 @@ public class ItemController {
 	}
 
 	public void prepareModelsForIndex(Model model, int folderId) {
-		model.addAttribute("files", fileService.getAllByUserIdAndFolder(getUser().getId(), folderId,false));
+		model.addAttribute("files", fileService.getAllByUserIdAndFolder(getUser().getId(), folderId, false));
 		model.addAttribute("folders", folderService.getAllByUserIdAndFolder(getUser().getId(), folderId));
 		model.addAttribute("folderId", folderId);
 		model.addAttribute("flags", Flag.values());
@@ -186,18 +201,22 @@ public class ItemController {
 	public Model prepareModels(Model model, @Nullable Object fileObj, @Nullable Object folderObj) {
 		model.addAttribute("files", fileObj);
 		model.addAttribute("folders", folderObj);
-		
+
 		return model;
 	}
 
-	
-	
 	// TODO: User
 	public User getUser() {
 		if (user == null) {
-			user = userService.getUserById(1);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String email = "";
+			if (!(authentication instanceof AnonymousAuthenticationToken)) {
+				DefaultOAuth2User oAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
+				email = (String)oAuth2User.getAttributes().get("email");
+			}			
+			user = userService.getUserByEmail(email);
 			if (user.equals(null)) {
-				user = new User("user");
+				user = new User(email);
 			}
 		}
 		return user;

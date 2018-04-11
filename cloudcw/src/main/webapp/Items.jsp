@@ -96,7 +96,7 @@
 									data-fileid="/items/renameFile/${file.id}"
 									data-oldName="${file.name}">Rename</a>
 								<div class="dropdown-divider">Move</div>
-								<a class="dropdown-item" href="#">Flag</a> -->
+								<a class="dropdown-item" href="#">Flag</a>
 							</div>
 						</div>
 					</td>

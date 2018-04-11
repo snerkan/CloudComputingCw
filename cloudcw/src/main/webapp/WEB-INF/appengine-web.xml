@@ -7,13 +7,10 @@
 	<runtime>java8</runtime>
 	<version>1</version>
 	<use-google-connector-j>true</use-google-connector-j>
+	<sessions-enabled>true</sessions-enabled>
 
-
-<!--	<service>cloudsql</service>
-	<system-properties>
-		<property name="cloudsql"
-			value="jdbc:google:mysql://${scenic-firefly-199015:europe-west2:instanceforcw}/${cloudcwdb}?user=${root}&amp;password=${myPass111***}" />
-		<property name="cloudsql-local"
-			value="jdbc:mysql://google/${cloudcwdb}?useSSL=false&amp;cloudSqlInstance=${scenic-firefly-199015:europe-west2:instanceforcw}&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=${root}&amp;password=${myPass111***}" />
-	</system-properties>   -->
+	<!-- <service>cloudsql</service> <system-properties> <property name="cloudsql" 
+		value="jdbc:google:mysql://${scenic-firefly-199015:europe-west2:instanceforcw}/${cloudcwdb}?user=${root}&amp;password=${myPass111***}" 
+		/> <property name="cloudsql-local" value="jdbc:mysql://google/${cloudcwdb}?useSSL=false&amp;cloudSqlInstance=${scenic-firefly-199015:europe-west2:instanceforcw}&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=${root}&amp;password=${myPass111***}" 
+		/> </system-properties> -->
 </appengine-web-app>
