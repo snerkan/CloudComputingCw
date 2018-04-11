@@ -46,6 +46,12 @@ public class FileService {
 		csh = new CloudStorageHelper();
 	}
 
+	// Get a folder By Id
+	public File getFileById(int id) {
+		return fileRepository.findById(id);
+	}
+	
+	
 	// Get all Files By User Id
 	public List<File> getAllByUserId(int userId) {
 		List<File> files = new ArrayList<>();
@@ -56,10 +62,16 @@ public class FileService {
 	}
 	
 	// Get all Files  By User and Folder
-	public List<File> getAllByUserIdandFolder(int userId,int folderId) {
+	public List<File> getAllByUserIdAndFolder(int userId,int folderId,boolean isDeleted) {
 		List<File> files = new ArrayList<>();
-		for (File f : fileRepository.findByUserIdAndFolderIdAndIsDeleted(userId, folderId, false)) {
-			files.add(f);
+		if(folderId==0) {
+			for (File f : fileRepository.findByUserIdAndFolderAndIsDeleted(userId, null, isDeleted)) {
+				files.add(f);
+			}	
+		}else {
+			for (File f : fileRepository.findByUserIdAndFolderIdAndIsDeleted(userId, folderId, isDeleted)) {
+				files.add(f);
+			}
 		}
 		return files;
 	}
@@ -81,12 +93,11 @@ public class FileService {
 		int index = fileFirstName.lastIndexOf('.');
 		String type = fileFirstName.substring(index);
 		uniqueName = fileFirstName.substring(0, index) + uniqueName + type;
-
 		try {
 			String address = csh.uploadFile(fileStream, uniqueName);
 			if (fileRepository.existsByName(fileFirstName)) {
 				fileFirstName = uniqueName;
-			}
+			} 
 			fileRepository.save(new File(fileFirstName, user, folder, address, uniqueName));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -99,10 +110,26 @@ public class FileService {
 
 	
 	// Rename folder
-	public void renameFile(int id, int userId, String newName) {
+	public void renameFile(int id, int userId, String newName) throws IOException {
 		File file = fileRepository.findById(id);
+		
+		String fileFirstName = file.getStorageName();
+		String uniqueName = DateTime.now(DateTimeZone.UTC).toString(DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS"));
+		int index = fileFirstName.lastIndexOf('.');
+		String type = fileFirstName.substring(index);
+		uniqueName = newName+uniqueName+type;
+		if (fileRepository.existsByName(newName+type)) {
+			newName = uniqueName;
+		} 
+		else {
+			newName=newName+type;
+		}
+		
 		if (userId == file.getUser().getId()) {
+			String newLink = csh.renameItem(file.getStorageName(), uniqueName);
 			file.setName(newName);
+			file.setStorageName(uniqueName);
+			file.setStorageAddress(newLink);
 			fileRepository.save(file);
 		}
 	}
@@ -126,32 +153,27 @@ public class FileService {
 	}
 
 	// For Trash folder
-	public void deleteFirstTime(int id, int userId) {
-		File file = fileRepository.findById(id);
-		if (userId == file.getUser().getId()) {
+	public void deleteFirstTime(File file) {
+		System.out.println("delete file");
 			file.setDeleted(true);
 			fileRepository.save(file);
-		}
+			System.out.println("after delete folders");
 	}
 
 	// Put Back File from trash
-	public void putBackFileFromTrash(int id, int userId) {
-		File file = fileRepository.findById(id);
-		if (userId == file.getUser().getId()) {
+	public void putBackFileFromTrash(File file) {
 			file.setDeleted(false);
-			fileRepository.save(file);
-		}
+			fileRepository.save(file);	
 	}
 
 	// Delete Permanently from Trash
-	public void deletePermanently(int id) {
-		File file = fileRepository.findById(id);
+	public void deletePermanently(File file) {
 		try {
 			csh.deleteItem(file.getStorageName());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 		}
-		fileRepository.deleteById(id);
+		fileRepository.delete(file);
 	}
 
 	// Delete All Folders Permanently from Trash

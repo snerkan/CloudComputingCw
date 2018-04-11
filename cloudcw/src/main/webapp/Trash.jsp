@@ -37,7 +37,7 @@
 								<a class="dropdown-item" data-toggle="modal"
 									data-target="#deleteModal"
 									data-fileid="/trash/deleteFolder/${folder.id}">Delete</a> <a
-									href="/trash/putBackFile/${folder.id}" class="dropdown-item"
+									href="/trash/putBackFolder/${folder.id}" class="dropdown-item"
 									id="deleteButton">Put Back</a>
 							</div>
 						</div>

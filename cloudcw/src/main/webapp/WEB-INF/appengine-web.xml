@@ -1,7 +1,7 @@
 
 <appengine-web-app
 	xmlns="http://appengine.google.com/ns/1.0">
-	
+
 	<application>scenic-firefly-199015</application>
 	<threadsafe>true</threadsafe>
 	<runtime>java8</runtime>
@@ -9,17 +9,11 @@
 	<use-google-connector-j>true</use-google-connector-j>
 
 
-
-
 <!--	<service>cloudsql</service>
- 
 	<system-properties>
 		<property name="cloudsql"
-			value="jdbc:google:mysql://${scenic-firefly-199015:europe-west2:instanceforcw}/${cloudcwdb}?user=${cloudcwuser}&amp;password=${m4hvcwA45iyvItMK}" />
+			value="jdbc:google:mysql://${scenic-firefly-199015:europe-west2:instanceforcw}/${cloudcwdb}?user=${root}&amp;password=${myPass111***}" />
 		<property name="cloudsql-local"
-			value="jdbc:mysql://google/${cloudcwdb}?useSSL=false&amp;cloudSqlInstance=${scenic-firefly-199015:europe-west2:instanceforcw}&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=${cloudcwuser}&amp;password=${m4hvcwA45iyvItMK}" />
-	</system-properties>
+			value="jdbc:mysql://google/${cloudcwdb}?useSSL=false&amp;cloudSqlInstance=${scenic-firefly-199015:europe-west2:instanceforcw}&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=${root}&amp;password=${myPass111***}" />
+	</system-properties>   -->
 </appengine-web-app>
-
- -->
- </appengine-web-app>

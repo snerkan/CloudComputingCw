@@ -11,6 +11,8 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 	Folder findById(int id);
 
 	List<Folder> findByUserIdAndIsDeleted(int userId, boolean isDeleted);
+	
+	List<Folder> findByUserIdAndParentFolderId(int userId, int parentId);
 
 	List<Folder> findByUserIdAndParentFolderIdAndIsDeleted(int userId, int parentId, boolean isDeleted);
 	

@@ -13,6 +13,8 @@ public interface FileRepository extends CrudRepository<File, Integer> {
 	List<File> findByUserIdAndIsDeleted(int userId, boolean isDeleted);
 	 
 	List<File> findByUserIdAndFolderIdAndIsDeleted(int userId, int folderId, boolean isDeleted);
+	
+	List<File> findByUserIdAndFolderAndIsDeleted(int userId, Folder folder, boolean isDeleted);
 		
 	 boolean existsByName(String name);
 	 

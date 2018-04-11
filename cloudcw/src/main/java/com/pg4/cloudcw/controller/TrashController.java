@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.pg4.cloudcw.entity.File;
+import com.pg4.cloudcw.entity.Folder;
 import com.pg4.cloudcw.entity.User;
 import com.pg4.cloudcw.service.FileService;
 import com.pg4.cloudcw.service.FolderService;
@@ -37,7 +39,10 @@ public class TrashController {
 	// put back FILE from Trash
 	@GetMapping("/trash/putBackFile/{id}")
 	public String putBackFile(@PathVariable("id") int id, Model model) {
-		fileService.putBackFileFromTrash(id, getUser().getId());
+		File file = fileService.getFileById(id);
+		if(file.getUser().getId()==getUser().getId()) {
+			fileService.putBackFileFromTrash(file);
+		}
 		model = prepareModelsForTrash(model);
 		return "redirect:/trash";
 	}
@@ -45,7 +50,10 @@ public class TrashController {
 	// put back FOLDER from Trash 
 	@GetMapping("/trash/putBackFolder/{id}")
 	public String putBackFolder(@PathVariable("id") int id, Model model) {
-		folderService.putBackFolderFromTrash(id, getUser().getId());
+		Folder folder = folderService.getFolderById(id);
+		if(folder.getUser().getId()==getUser().getId()) {
+			folderService.putBackFolderFromTrash(folder);
+		}	
 		model = prepareModelsForTrash(model);
 		return "redirect:/trash";
 	}	
@@ -53,7 +61,10 @@ public class TrashController {
 	// Delete FILE from Trash
 	@GetMapping("/trash/deleteFile/{id}")
 	public String deleteFileFromTrash(@PathVariable("id") int id, Model model) {
-		fileService.deletePermanently(id);
+		File file = fileService.getFileById(id);
+		if(file.getUser().getId()==getUser().getId()) {
+			fileService.deletePermanently(file);
+		}
 		model = prepareModelsForTrash(model);
 		return "redirect:/trash";
 	}
@@ -61,7 +72,10 @@ public class TrashController {
 	// Delete FOLDER from Trash
 	@GetMapping("/trash/deleteFolder/{id}")
 	public String deleteFolderFromTrash(@PathVariable("id") int id, Model model) {
-		folderService.deletePermanently(id);
+		Folder folder = folderService.getFolderById(id);
+		if(folder.getUser().getId()==getUser().getId()) {
+			folderService.deletePermanently(folder);
+		}	
 		model = prepareModelsForTrash(model); 
 		return "redirect:/trash";
 	}

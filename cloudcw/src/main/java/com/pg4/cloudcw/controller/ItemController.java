@@ -45,95 +45,53 @@ public class ItemController {
 
 	@GetMapping("/items")
 	public String home(Model model) {
-		prepareModelsForIndex(model);
+		prepareModelsForIndex(model, 0);
 		return "items";
 	}
 
+	@GetMapping("/items/folder/{id}")
+	public String homeForFolder(@PathVariable("id") int id, Model model) {
+		prepareModelsForIndex(model, id);
+		return "items";
+	}
 
 	// Create Folder
 	@PostMapping("/items/createFolder")
 	public String createFolder(@RequestParam("name") String name, @RequestParam("parentId") String parentId,
 			Model model) {
 		int parenId = Integer.parseInt(parentId);
-		folderService.createFolder( new Folder(name,getUser(), parenId));			
+		folderService.createFolder(new Folder(name, getUser(), parenId));
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
 
 	// Upload File
-	@PostMapping("/items/createFile")
-	public void createFile(HttpServletRequest request, Model model, HttpServletResponse response) throws ServletException, IOException {
+	@PostMapping("/items/createFile/{folderId}")
+	public void createFile(@PathVariable("folderId") int folderId, HttpServletRequest request, Model model, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Folder parentFolder = null;
-			int folderId = 0;
-			if(folderId!=0) {
-				parentFolder = folderService.getFolderById(0);
-			}
+			Folder parentFolder = folderService.getFolderById(folderId);
+			// Getting files
 			FileItemIterator iterator = new ServletFileUpload().getItemIterator(request);
+			FileItemStream fileStream;
 			while (iterator.hasNext()) {
-				FileItemStream fileStream = iterator.next();
-				try {
-					fileService.uploadFile(fileStream, parentFolder, getUser());
-				} catch (InterruptedException e) { // TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		} catch (FileUploadException e1) { // TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		prepareModelsForIndex(model);
-		response.sendRedirect("/items");
-	}
-	
-	
-	
-	
-	/*
-	 
-		// Upload File
-	@PostMapping("/items/createFile")
-	public void createFile(HttpServletRequest request, Model model, HttpServletResponse response)
-			throws ServletException, IOException {
-		Folder parentFolder = null;
-		FileItemStream fileParent = null;
-		FileItemIterator iterator=null;
-		try {
-			iterator = new ServletFileUpload().getItemIterator(request);
-		} catch (FileUploadException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			while (iterator.hasNext()) {
-				FileItemStream fileStream = iterator.next();
+				fileStream = iterator.next();
 				if (fileStream.getFieldName().equals("file")) {
-					if (iterator.hasNext()) {
-						fileParent = iterator.next();
-						if (fileParent.getFieldName().equals("parentId")) {
-							parentFolder = folderService.getFolderById(0);//Integer.parseInt(fileParent.getName()));
-						}
-					}
 					try {
-						fileService.uploadFile(fileStream, null, getUser());
+						fileService.uploadFile(fileStream, parentFolder, getUser());
 					} catch (InterruptedException e) { // TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileUploadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (FileUploadException e1) { // TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		prepareModelsForIndex(model);
-		response.sendRedirect("/items.jsp");
+		prepareModelsForIndex(model, folderId);
+		response.sendRedirect("/items");
+		
 	}
-	  */
-	
 
-	//Change FILE Flag
+	// Change FILE Flag
 	@GetMapping("/items/changeFileFlag/{id}")
 	public String changeFileFlag(@PathVariable("id") int id, @RequestParam("newflag") Flag newflag, Model model) {
 		fileService.changeFileFlag(id, getUser().getId(), newflag);
@@ -141,82 +99,98 @@ public class ItemController {
 		return "redirect:/items";
 	}
 
-	
-	//Change FOLDER Flag
+	// Change FOLDER Flag
 	@GetMapping("/items/changeFolderFlag/{id}")
 	public String changeFolderFlag(@PathVariable("id") int id, @RequestParam("newflag") Flag newflag, Model model) {
 		folderService.changeFolderFlag(id, getUser().getId(), newflag);
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
-	
-	//Change FILE directory
+
+	// Change FILE directory
 	@GetMapping("/items/changeFileDirectory/{id}")
-	public String changeFileDirectory(@PathVariable("id") int id, @RequestParam("folderId") Folder folder, Model model) {
+	public String changeFileDirectory(@PathVariable("id") int id, @RequestParam("folderId") Folder folder,
+			Model model) {
 		fileService.changeFileDirectory(id, getUser().getId(), folder);
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
 
-	
-	//Change FOLDER Directory
+	// Change FOLDER Directory
 	@GetMapping("/items/changeFolderDirectory/{id}")
-	public String changeFolderDirectory(@PathVariable("id") int id,@RequestParam("folderId") Folder folder, Model model) {
+	public String changeFolderDirectory(@PathVariable("id") int id, @RequestParam("folderId") Folder folder,
+			Model model) {
 		folderService.changeFolderDirectory(id, getUser().getId(), folder.getId());
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
-	
-	//Rename FILE
-	@GetMapping("/items/renameFile/{id}")
+
+	// Rename FILE
+	@PostMapping("/items/renameFile/{id}")
 	public String renameFile(@PathVariable("id") int id, @RequestParam("newName") String newName, Model model) {
-		fileService.renameFile(id, getUser().getId(), newName);
+		try {
+			fileService.renameFile(id, getUser().getId(), newName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
 
-	
-	//Rename FOLDER
-	@GetMapping("/items/renameFolder/{id}")
+	// Rename FOLDER
+	@PostMapping("/items/renameFolder/{id}")
 	public String renameFolder(@PathVariable("id") int id, @RequestParam("newName") String newName, Model model) {
 		folderService.renameFolder(id, getUser().getId(), newName);
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
 
-	
-	//Delete FILE
+	// Delete FILE
 	@GetMapping("/items/deleteFile/{id}")
 	public String deleteFile(@PathVariable("id") int id, Model model) {
-		fileService.deleteFirstTime(id, getUser().getId());
+		File file = fileService.getFileById(id);
+		if (file.getUser().getId() == getUser().getId()) {
+			fileService.deleteFirstTime(file);
+		}
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
 
-	
-	//Delete FOLDER
+	// Delete FOLDER
 	@GetMapping("/items/deleteFolder/{id}")
 	public String deleteFolder(@PathVariable("id") int id, Model model) {
-		folderService.deleteFirstTime(id, getUser().getId());
+		Folder folder = folderService.getFolderById(id);
+		if (folder.getUser().getId() == getUser().getId()) {
+			folderService.deleteFirstTime(folder);
+		}
 		prepareModelsForIndex(model);
 		return "redirect:/items";
 	}
-	
-	
-	
+
 	public void prepareModelsForIndex(Model model) {
 		model.addAttribute("files", fileService.getAllByUserId(getUser().getId()));
 		model.addAttribute("folders", folderService.getAllByUserId(getUser().getId()));
-	//	return model;
+		model.addAttribute("folderId", 0);
+		model.addAttribute("flags", Flag.values());
 	}
-	
-	
+
+	public void prepareModelsForIndex(Model model, int folderId) {
+		model.addAttribute("files", fileService.getAllByUserIdAndFolder(getUser().getId(), folderId,false));
+		model.addAttribute("folders", folderService.getAllByUserIdAndFolder(getUser().getId(), folderId));
+		model.addAttribute("folderId", folderId);
+		model.addAttribute("flags", Flag.values());
+	}
+
 	public Model prepareModels(Model model, @Nullable Object fileObj, @Nullable Object folderObj) {
 		model.addAttribute("files", fileObj);
 		model.addAttribute("folders", folderObj);
+		
 		return model;
 	}
 
+	
+	
 	// TODO: User
 	public User getUser() {
 		if (user == null) {
