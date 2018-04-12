@@ -291,7 +291,8 @@
 	$('#shareModal').on('show.bs.modal', function(event) {
 		var button = $(event.relatedTarget)
 		var link = " " + button.data('fileid')
-		$(this).find('#shareModelBody').append(link)
+		$(this).find('#shareModelBody').val(link)
+		//$(this).find('#shareModelBody').append(link)
 	});
 
 	$('.modal').on('hidden.bs.modal', function() {

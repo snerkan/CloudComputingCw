@@ -106,12 +106,15 @@ public class TrashController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String email = "";
 			if (!(authentication instanceof AnonymousAuthenticationToken)) {
-				DefaultOAuth2User oAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
-				email = (String)oAuth2User.getAttributes().get("email");
-			}			
-			user = userService.getUserByEmail(email);
-			if (user.equals(null)) {
-				user = new User(email);
+				DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+				email = (String) oAuth2User.getAttributes().get("email");
+
+				user = userService.getUserByEmail(email);
+				if (user == null) {
+					user = new User(email);
+					userService.createNewUser(user);
+				}
+				user = userService.getUserByEmail(email);
 			}
 		}
 		return user;
